@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    REPO          = 'Rajesh33-11/miniproject-'   // owner/repo
+    REPO          = 'Rajesh33-11/miniproject2'   // owner/repo
     CPU_LIMIT     = '80'
     DISK_LIMIT    = '80'
     TARGET_UBUNTU = '24.04'
