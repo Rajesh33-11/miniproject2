@@ -1,14 +1,15 @@
-
 pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "YOUR_DOCKERHUB_USER/sample-app"
+        IMAGE_NAME = "raja3333/sample-app"
     }
 
     stages {
         stage("Checkout") {
-            steps { checkout scm }
+            steps {
+                checkout scm
+            }
         }
 
         stage("Validate") {
@@ -32,9 +33,11 @@ pipeline {
 
         stage("Push to Docker Hub") {
             steps {
-                withCredentials([usernamePassword(credentialsId: "dockerhub-creds",
+                withCredentials([usernamePassword(
+                    credentialsId: "dockerhub-creds",
                     usernameVariable: "DOCKERHUB_USER",
-                    passwordVariable: "DOCKERHUB_TOKEN")]) {
+                    passwordVariable: "DOCKERHUB_TOKEN"
+                )]) {
                     sh '''
                         set +x
                         echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
@@ -48,8 +51,14 @@ pipeline {
     }
 
     post {
-        always { sh 'docker image prune -f' }
-        success { echo 'Image built, scanned, and pushed successfully.' }
-        failure { echo 'Pipeline failed; inspect logs and do not bypass a failed security scan without approval.' }
+        always {
+            sh 'docker image prune -f'
+        }
+        success {
+            echo 'Image built, scanned, and pushed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed; inspect logs and do not bypass a failed security scan without approval.'
+        }
     }
 }
